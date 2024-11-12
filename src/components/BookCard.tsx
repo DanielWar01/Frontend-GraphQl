@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client';
 import { gql } from '@apollo/client';
-import { Book } from '../App';
+import { Book, MAIN_BOOKS } from '../App';
 
 export const DELETE_BOOK = gql`
     mutation DeleteBook($id: Int!) {
@@ -20,7 +20,9 @@ export const DELETE_BOOK = gql`
 
 
 const BookCard = ({ book }: { book: Book }) => {
-    const [deleteBook] = useMutation(DELETE_BOOK);
+    const [deleteBook] = useMutation(DELETE_BOOK, { 
+        refetchQueries: [{query: MAIN_BOOKS}]
+        });
 
     const handleDelete = async () => {
         const { data } = await deleteBook({
